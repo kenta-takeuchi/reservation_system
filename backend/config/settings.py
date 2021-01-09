@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
     # My application
     'apiv1.apps.Apiv1Config',
-    'reservation.apps.Re'
+    'reservation.apps.ReservationConfig'
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,5 @@ SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60)
 }
+
+AUTH_USER_MODEL = 'reservation.User'
