@@ -31,7 +31,7 @@ class CalenderView(viewsets.ModelViewSet):
 class ClinicView(viewsets.ModelViewSet):
     queryset = Clinic.objects.all()
     serializer_class = ClinicSerializer
-    permission_classes = (custome_permissions.PatientOrStaffPermission,)
+    permission_classes = (permissions.IsAuthenticatedOrReadOnly, )
 
 
 class DepartmentView(viewsets.ModelViewSet):

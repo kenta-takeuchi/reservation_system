@@ -59,6 +59,9 @@ class Department(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     department_name = models.CharField(max_length=10)
 
+    def __str__(self):
+        return self.department_name
+
 
 class Clinic(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
@@ -68,6 +71,9 @@ class Clinic(models.Model):
     address = models.CharField(max_length=100)
     doctors = models.ManyToManyField(User, through="DoctorClinicRelation", related_name='clinics')
     departments = models.ManyToManyField(Department, related_name='clinics')
+
+    def __str__(self):
+        return self.clinic_name
 
 
 class DoctorClinicRelation(models.Model):
@@ -83,14 +89,23 @@ class Calendar(models.Model):
     business_start_time = models.TimeField(null=False)
     business_end_time = models.TimeField(null=False)
 
+    def __str__(self):
+        return f'{self.clinic} {self.date}'
+
 
 class ReservationFrame(models.Model):
     clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='reservation_frames')
     doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations_doctor', related_query_name='')
     start_date = models.DateTimeField()
 
+    def __str__(self):
+        return f'{self.clinic} {self.doctor} {self.start_date}'
+
 
 class Reservation(models.Model):
     reservation_frame = models.OneToOneField(ReservationFrame, on_delete=models.CASCADE, related_name='reservation')
     patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservation_patient')
     created_at = models.DateTimeField(auto_created=True)
+
+    def __str__(self):
+        return f'{self.patient} ({self.reservation_frame})'

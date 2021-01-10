@@ -9,6 +9,7 @@ djangorestframework = "==3.10.3"
 djangorestframework-simplejwt = "==4.3.0"
 djoser = "==2.0.3"
 django-filter = "*"
+pyjwt = "==1.7.1"
 
 [dev-packages]
 
