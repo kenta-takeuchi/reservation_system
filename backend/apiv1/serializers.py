@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from backend.reservation.models import User
-from backend.reservation.models import Calendar
-from backend.reservation.models import Clinic
-from backend.reservation.models import Department
-from backend.reservation.models import ReservationFrame
-from backend.reservation.models import Reservation
+from reservation.models import User
+from reservation.models import Calendar
+from reservation.models import Clinic
+from reservation.models import Department
+from reservation.models import ReservationFrame
+from reservation.models import Reservation
 
 
 class PatientSerializer(serializers.ModelSerializer):
@@ -33,7 +33,7 @@ class StaffSerializer(serializers.ModelSerializer):
 class CalendarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Calendar
-        fields = ['clinic.id', 'doctor.id', 'date', 'business_start_time', 'business_end_time']
+        fields = ['clinic', 'date', 'business_start_time', 'business_end_time']
 
 
 class ClinicSerializer(serializers.ModelSerializer):

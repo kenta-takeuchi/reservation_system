@@ -11,7 +11,7 @@ from .serializers import (
     ReservationFrameSerializer,
     StaffSerializer
 )
-from backend.reservation.models import (
+from reservation.models import (
     Calendar,
     Clinic,
     Department,
@@ -53,9 +53,6 @@ class StaffView(viewsets.ModelViewSet):
 
 
 class DoctorView(generics.ListAPIView):
-    queryset = User.objects.filter(is_staff=False, user_typt="3")
+    queryset = User.objects.filter(is_staff=False, user_type="3")
     serializer_class = StaffSerializer
     permission_classes = (custome_permissions.PatientOrStaffPermission,)
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category', 'in_stock']
-
