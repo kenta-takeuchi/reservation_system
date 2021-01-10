@@ -16,6 +16,7 @@ class UserManager(BaseUserManager):
 
     def create_user(self, email, password, **extra_fields):
         user = self._create_user(email, password, **extra_fields)
+        user.user_type = "1"
         user.save()
         return user
 
@@ -65,8 +66,8 @@ class Clinic(models.Model):
     tel = models.CharField(max_length=11)
     zip_code = models.CharField(max_length=7)
     address = models.CharField(max_length=100)
-    doctors = models.ManyToManyField(User, through="DoctorClinicRelation")
-    departments = models.ManyToManyField(Department)
+    doctors = models.ManyToManyField(User, through="DoctorClinicRelation", related_name='clinics')
+    departments = models.ManyToManyField(Department, related_name='clinics')
 
 
 class DoctorClinicRelation(models.Model):
@@ -77,19 +78,19 @@ class DoctorClinicRelation(models.Model):
 
 
 class Calendar(models.Model):
-    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='calendar')
     date = models.DateField(null=False)
     business_start_time = models.TimeField(null=False)
     business_end_time = models.TimeField(null=False)
 
 
 class ReservationFrame(models.Model):
-    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE)
-    doctor = models.ForeignKey(User, on_delete=models.CASCADE)
+    clinic = models.ForeignKey(Clinic, on_delete=models.CASCADE, related_name='reservation_frames')
+    doctor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservations_doctor', related_query_name='')
     start_date = models.DateTimeField()
 
 
 class Reservation(models.Model):
-    reservation_frame = models.OneToOneField(ReservationFrame, on_delete=models.CASCADE)
-    patient = models.ForeignKey(User, on_delete=models.CASCADE)
+    reservation_frame = models.OneToOneField(ReservationFrame, on_delete=models.CASCADE, related_name='reservation')
+    patient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reservation_patient')
     created_at = models.DateTimeField(auto_created=True)

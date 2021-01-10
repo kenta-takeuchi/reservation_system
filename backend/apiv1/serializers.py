@@ -8,14 +8,25 @@ from backend.reservation.models import ReservationFrame
 from backend.reservation.models import Reservation
 
 
-class UserSerializer(serializers.ModelSerializer):
+class PatientSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", 'first_name', 'last_name', "password", "is_staff", "user_type"]
+        fields = ["id", "username", 'first_name', 'last_name', "password"]
         extra_kwargs = {"password": {"write_only": True, "required": True}}
 
     def create(self, validated_data):
         user = User.objects.create_user(**validated_data)
+        return user
+
+
+class StaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["id", "username", 'first_name', 'last_name', "password", "user_type"]
+        extra_kwargs = {"password": {"write_only": True, "required": True}}
+
+    def create(self, validated_data):
+        user = User.objects.create_superuser(**validated_data)
         return user
 
 
